@@ -52,27 +52,27 @@ func walk(root, dir string) []string {
 	return paths
 }
 
-func readHash(path string) (string, error) {
-	fp, err := os.Open(path)
-	if err != nil {
-		return "", err
-	}
-	defer fp.Close()
+// func readHash(path string) (string, error) {
+// 	fp, err := os.Open(path)
+// 	if err != nil {
+// 		return "", err
+// 	}
+// 	defer fp.Close()
 
-	buf := make([]byte, 64)
-	hash := ""
-	for {
-		n, err := fp.Read(buf)
-		if n == 0 {
-			break
-		}
-		if err != nil {
-			panic(err)
-		}
-		hash += string(buf[:n])
-	}
-	return hash, nil
-}
+// 	buf := make([]byte, 64)
+// 	hash := ""
+// 	for {
+// 		n, err := fp.Read(buf)
+// 		if n == 0 {
+// 			break
+// 		}
+// 		if err != nil {
+// 			panic(err)
+// 		}
+// 		hash += string(buf[:n])
+// 	}
+// 	return hash, nil
+// }
 
 func main() {
 	var (
@@ -108,14 +108,19 @@ func main() {
 	fmt.Printf("---------------------------------------------\n\n")
 
 	ctx := context.Background()
-	
-	if cr == "" {
-		client, err := storage.NewClient(ctx, option.WithCredentialsFile(*cr))
+	var err error
+	var client *storage.Client
+
+	if *cr == "" {
+		client, err = storage.NewClient(ctx, option.WithCredentialsFile(*cr))
+		if err != nil {
+			panic("err: failed to create gcs client")
+		}
 	} else {
-		client, err := storage.NewClient(ctx)
-	}
-	if err != nil {
-		panic("err: failed to create gcs client")
+		client, err = storage.NewClient(ctx)
+		if err != nil {
+			panic("err: failed to create gcs client")
+		}
 	}
 
 	b := client.Bucket(*bn)
