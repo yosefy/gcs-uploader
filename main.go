@@ -88,9 +88,9 @@ func main() {
 		panic("err: undefined bucket name")
 	}
 
-	if len(*cr) == 0 {
-		panic("err: undefined credential path")
-	}
+// 	if len(*cr) == 0 {
+// 		panic("err: undefined credential path")
+// 	}
 
 	if len(*in) == 0 {
 		panic("err: undefined input path")
