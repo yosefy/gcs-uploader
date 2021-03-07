@@ -108,8 +108,12 @@ func main() {
 	fmt.Printf("---------------------------------------------\n\n")
 
 	ctx := context.Background()
-
-	client, err := storage.NewClient(ctx, option.WithCredentialsFile(*cr))
+	
+	if cr == "" {
+		client, err := storage.NewClient(ctx, option.WithCredentialsFile(*cr))
+	} else {
+		client, err := storage.NewClient(ctx)
+	}
 	if err != nil {
 		panic("err: failed to create gcs client")
 	}
